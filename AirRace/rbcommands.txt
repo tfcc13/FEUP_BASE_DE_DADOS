@@ -1,0 +1,223 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE Team(
+name text primary key,
+country text
+);
+CREATE TABLE Aircraft(
+model text primary key,
+horsepower integer,
+topspeed real,
+width real
+,
+height real,
+weight real
+);
+CREATE TABLE Pilot(
+num integer primary key,
+firstname text,
+surname text,
+nationality text,
+birthday date,
+team text,
+aircraft text,
+foreign key (team) references Team(name) ON UPDATE CASCADE,
+foreign key(aircraft) references Aircraft(model) ON UPDATE CASCADE
+);
+CREATE TABLE Race(
+location text,
+edition integer,
+country text,
+date DATE,
+gates integer,
+eliminations integer,
+primary key (location, edition),
+check (gates >= 1 and eliminations >= 1),
+unique (date, location)
+);
+CREATE TABLE Participation(
+pilot text,
+location text,
+edition integer,
+trainingtime real,
+trainingpos integer,
+trainingpenalty real,
+qualificationtime real,
+eliminationtime real,
+qualificationpos integer,
+qualificationpenalty integer,
+eliminationpos integer,
+eliminationpenalty real,
+primary key(pilot, location, edition),
+foreign key (pilot) references Pilot(num),
+foreign key (location,edition) references Race(location,edition),
+check (trainingpos >= 1 AND qualificationpos >= 1 and eliminationpos >= 1),
+check (trainingtime >= 0 AND qualificationtime >= 0 AND eliminationtime >= 0 and trainingpenalty >= 0 and qualificationpenalty >= 0 and eliminationpenalty >= 0),
+check ( (trainingtime IS NOT NULL AND trainingpos IS NOT NULL) OR (qualificationtime IS NOT NULL AND qualificationpos IS NOT NULL) OR
+ (eliminationtime IS NOT NULL AND eliminationpos IS NOT NULL))
+);
+CREATE TABLE Duel(
+pilot1 text,
+pilot2 text,
+location text,
+edition integer,
+dueltype text,
+timepilot1 real,
+timepilot2 real,
+penaltypilot1 real,
+penaltypilot2 real,
+primary key (pilot1, pilot2, location, edition),
+foreign key (pilot1) references Pilot(num),
+foreign key (pilot2) references Pilot(num),
+foreign key(location, edition) references Race(location, edition)
+);
+COMMIT;
+Aircraft       Participation  Race         
+Duel           Pilot          Team         
+Matador|Great Britain
+Red Bull|Austria
+Cobra|USA
+Mediterranean Racing Team|Spain
+Lobo|Germany
+Breitling|Great Britain
+Dragon|Russia
+CREATE TABLE Team(
+name text primary key,
+country text
+);
+CREATE TABLE Aircraft(
+model text primary key,
+horsepower integer,
+topspeed real,
+width real
+,
+height real,
+weight real
+);
+CREATE TABLE Participation(
+pilot text,
+location text,
+edition integer,
+trainingtime real,
+trainingpos integer,
+trainingpenalty real,
+qualificationtime real,
+eliminationtime real,
+qualificationpos integer,
+qualificationpenalty integer,
+eliminationpos integer,
+eliminationpenalty real,
+primary key(pilot, location, edition),
+foreign key (pilot) references Pilot(num),
+foreign key (location,edition) references Race(location,edition),
+check (trainingpos >= 1 AND qualificationpos >= 1 and eliminationpos >= 1),
+check (trainingtime >= 0 AND qualificationtime >= 0 AND eliminationtime >= 0 and trainingpenalty >= 0 and qualificationpenalty >= 0 and eliminationpenalty >= 0),
+check ( (trainingtime IS NOT NULL AND trainingpos IS NOT NULL) OR (qualificationtime IS NOT NULL AND qualificationpos IS NOT NULL) OR
+ (eliminationtime IS NOT NULL AND eliminationpos IS NOT NULL))
+);
+CREATE TABLE Duel(
+pilot1 text,
+pilot2 text,
+location text,
+edition integer,
+dueltype text,
+timepilot1 real,
+timepilot2 real,
+penaltypilot1 real,
+penaltypilot2 real,
+primary key (pilot1, pilot2, location, edition),
+foreign key (pilot1) references Pilot(num),
+foreign key (pilot2) references Pilot(num),
+foreign key(location, edition) references Race(location, edition)
+);
+CREATE TABLE Pilot(
+num integer NOT NULL primary key  ,
+firstname text NOT NULL,
+surname text  NOT NULL,
+nationality text NOT NULL,
+birthday date,
+team text,
+aircraft text,
+foreign key (team) references Team(name) ON UPDATE CASCADE,
+foreign key(aircraft) references Aircraft(model) ON UPDATE CASCADE
+);
+CREATE TABLE Race(
+location text NOT NULL ,
+edition integer NOT NULL ,
+country text NOT NULL ,
+date DATE NOT NULL ,
+gates integer,
+eliminations integer DEFAULT 1,
+primary key (location, edition),
+unique (date, location)
+);
+CREATE TABLE Team(
+name text primary key,
+country text
+);
+CREATE TABLE Aircraft(
+model text primary key,
+horsepower integer,
+topspeed real,
+width real
+,
+height real,
+weight real
+);
+CREATE TABLE Participation(
+pilot text,
+location text,
+edition integer,
+trainingtime real,
+trainingpos integer,
+trainingpenalty real,
+qualificationtime real,
+eliminationtime real,
+qualificationpos integer,
+qualificationpenalty integer,
+eliminationpos integer,
+eliminationpenalty real,
+primary key(pilot, location, edition),
+foreign key (pilot) references Pilot(num),
+foreign key (location,edition) references Race(location,edition),
+check (trainingpos >= 1 AND qualificationpos >= 1 and eliminationpos >= 1),
+check (trainingtime >= 0 AND qualificationtime >= 0 AND eliminationtime >= 0 and trainingpenalty >= 0 and qualificationpenalty >= 0 and eliminationpenalty >= 0),
+check ( (trainingtime IS NOT NULL AND trainingpos IS NOT NULL) OR (qualificationtime IS NOT NULL AND qualificationpos IS NOT NULL) OR
+ (eliminationtime IS NOT NULL AND eliminationpos IS NOT NULL))
+);
+CREATE TABLE Duel(
+pilot1 text,
+pilot2 text,
+location text,
+edition integer,
+dueltype text,
+timepilot1 real,
+timepilot2 real,
+penaltypilot1 real,
+penaltypilot2 real,
+primary key (pilot1, pilot2, location, edition),
+foreign key (pilot1) references Pilot(num),
+foreign key (pilot2) references Pilot(num),
+foreign key(location, edition) references Race(location, edition)
+);
+CREATE TABLE Pilot(
+num integer NOT NULL primary key  ,
+firstname text NOT NULL,
+surname text  NOT NULL,
+nationality text NOT NULL,
+birthday date,
+team text,
+aircraft text,
+foreign key (team) references Team(name) ON UPDATE CASCADE,
+foreign key(aircraft) references Aircraft(model) ON UPDATE CASCADE
+);
+CREATE TABLE Race(
+location text NOT NULL ,
+edition integer NOT NULL ,
+country text NOT NULL ,
+date DATE NOT NULL ,
+gates integer,
+eliminations integer DEFAULT 1,
+primary key (location, edition),
+unique (date, location)
+);
